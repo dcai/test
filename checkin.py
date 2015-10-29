@@ -5,11 +5,16 @@ import logging
 import requests
 import time
 import configparser
+import os,sys
 try:
     import http.client as http_client
 except ImportError:
     # Python 2
     import httplib as http_client
+
+cfg = configparser.ConfigParser()
+dirname=os.path.dirname(os.path.realpath(sys.argv[0]))
+cfg.read("{}/credentials.ini".format(dirname))
 
 def checkin_netease(music_u, csrf):
     TYPE_WEBPC = 1
@@ -24,14 +29,15 @@ def checkin_netease(music_u, csrf):
     url = 'http://music.163.com/api/point/dailyTask?type={}'.format(TYPE_WEBPC)
     response = requests.post(url, cookies=cookies, headers=headers)
     wjson = response.json()
-    log_from_code(wjson['code'], 'web & pc')
+    log_from_code(wjson, 'web & pc')
     # android
     url = 'http://music.163.com/api/point/dailyTask?type={}'.format(TYPE_ANDROID)
     response = requests.post(url, cookies=cookies, headers=headers)
     ajson = response.json()
-    log_from_code(ajson['code'], 'android')
+    log_from_code(ajson, 'android')
 
-def log_from_code(code, platform):
+def log_from_code(response_json, platform):
+    code = response_json['code']
     if code == -2:
         logging.info('{} 失败. 今天签到过了.'.format(platform))
     elif code == 200:
@@ -86,7 +92,5 @@ def _config_log(echo, filename=None):
                                 datefmt='[%Y-%m-%d %H:%M:%S]')
 
 _config_log(True, '/tmp/checkin.log')
-cfg = configparser.ConfigParser()
-cfg.read("credentials.ini")
 checkin_netease(cfg['netease']['music_u'], cfg['netease']['csrf'])
 checkin_zimuzu(cfg['zimuzu']['username'], cfg['zimuzu']['password'])
