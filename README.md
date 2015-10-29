@@ -1,3 +1,3 @@
 # test repository
 
-A place to test things.
+Housekeeping stuff.
