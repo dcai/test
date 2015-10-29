@@ -87,6 +87,6 @@ def _config_log(echo, filename=None):
 
 _config_log(True, '/tmp/checkin.log')
 cfg = configparser.ConfigParser()
-cfg.read("checkin.ini")
+cfg.read("credentials.ini")
 checkin_netease(cfg['netease']['music_u'], cfg['netease']['csrf'])
 checkin_zimuzu(cfg['zimuzu']['username'], cfg['zimuzu']['password'])
