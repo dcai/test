@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+# -- coding: utf-8 --
 
 import logging
 import requests
@@ -42,11 +42,11 @@ def checkin_netease(music_u, csrf):
 def log_from_code(response_json, platform):
     code = response_json['code']
     if code == -2:
-        logging.info('{} 失败. 今天签到过了.'.format(platform))
+        logging.info('{} failed. you already checked in today.'.format(platform))
     elif code == 200:
-        logging.info('{} ok. 经验 +{}'.format(platform, response_json['point']))
+        logging.info('{} ok. +{} points'.format(platform, response_json['point']))
     else:
-        logging.info('{} 失败. {}({})'.format(platform, code, response_json['msg']))
+        logging.info('{} failed. {}({})'.format(platform, code, response_json['msg']))
 
 def checkin_zimuzu(username, password):
     backurl = 'http://www.zimuzu.tv/user/sign'
@@ -59,7 +59,7 @@ def checkin_zimuzu(username, password):
     headers = {'Referer': 'http://www.zimuzu.tv'}
     r = requests.post("http://www.zimuzu.tv/User/Login/ajaxLogin", data = data, headers=headers)
     o = r.json()
-    logging.info(o['info'])
+    #logging.info(o['info'])
 
     url = "http://www.zimuzu.tv/user/login/getCurUserTopInfo"
     r1 = requests.get(url, cookies=r.cookies, headers=headers)
