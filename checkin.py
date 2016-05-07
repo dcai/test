@@ -22,11 +22,21 @@ cfg = configparser.ConfigParser()
 dirname=os.path.dirname(os.path.realpath(sys.argv[0]))
 cfg.read("{}/credentials.ini".format(dirname))
 
-loggingconfigfile="{}/logging.ini".format(dirname)
-if os.path.isfile(loggingconfigfile):
-    logging.config.fileConfig(loggingconfigfile)
-
 l = logging.getLogger('checkin')
+l.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+# create file handler which logs even debug messages
+fileHandler = logging.FileHandler('/tmp/test.log')
+fileHandler.setLevel(logging.DEBUG)
+fileHandler.setFormatter(formatter)
+l.addHandler(fileHandler)
+
+# create console handler with a higher log level
+streamHandler = logging.StreamHandler()
+streamHandler.setLevel(logging.ERROR)
+streamHandler.setFormatter(formatter)
+l.addHandler(streamHandler)
 
 def checkin_netease(music_u, csrf):
     TYPE_WEBPC = 1
@@ -74,21 +84,21 @@ def checkin_zimuzu(username, password):
     }
     r = requests.post("http://www.zimuzu.tv/User/Login/ajaxLogin", data = data, headers=headers)
     o = r.json()
-    #l.info(o['info'])
+    l.info(o)
 
-    url = "http://www.zimuzu.tv/user/login/getCurUserTopInfo"
-    r1 = requests.get(url, cookies=r.cookies, headers=headers)
-    #l.info(r1.json())
+    #url = "http://www.zimuzu.tv/user/login/getCurUserTopInfo"
+    #r1 = requests.get(url, cookies=r.cookies, headers=headers)
+    ##l.info(r1.json())
 
-    # open checkin page and wait 16 seconds
-    r2 = requests.get(backurl, cookies=r.cookies, headers=headers)
-    time.sleep(16)
+    ## open checkin page and wait 16 seconds
+    #r2 = requests.get(backurl, cookies=r.cookies, headers=headers)
+    #time.sleep(16)
 
-    # do checkin
-    url = "http://www.zimuzu.tv/user/sign/dosign"
-    r3 = requests.get(url, cookies=r.cookies, headers=headers)
-    o = r3.json()
-    l.info(r3.content)
+    ## do checkin
+    #url = "http://www.zimuzu.tv/user/sign/dosign"
+    #r3 = requests.get(url, cookies=r.cookies, headers=headers)
+    #o = r3.json()
+    #l.info(r3.content)
 
 def checkin_v2ex(username, password):
     login_url = 'https://v2ex.com/signin'
@@ -149,5 +159,5 @@ def checkin_smzdm(email, password):
 
 checkin_netease(cfg['netease']['music_u'], cfg['netease']['csrf'])
 checkin_zimuzu(cfg['zimuzu']['username'], cfg['zimuzu']['password'])
-checkin_v2ex(cfg['v2ex']['username'], cfg['v2ex']['password'])
+#checkin_v2ex(cfg['v2ex']['username'], cfg['v2ex']['password'])
 #checkin_smzdm(cfg['smzdm']['email'], cfg['smzdm']['password'])
