@@ -83,7 +83,11 @@ def checkin_zimuzu(username, password):
         'Referer': 'http://www.zimuzu.tv'
     }
     r = requests.post("http://www.zimuzu.tv/User/Login/ajaxLogin", data = data, headers=headers)
-    o = r.json()
+    try:
+        o = r.json()
+    except Exception as e:
+        l.info(e)
+        pass
     l.info(o)
 
     #url = "http://www.zimuzu.tv/user/login/getCurUserTopInfo"
