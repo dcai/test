@@ -1,0 +1,22 @@
+{
+  "name": "dcai-test-repo",
+  "version": "1.0.0",
+  "description": "Dongsheng's test repository",
+  "main": "main.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dcai/test.git"
+  },
+  "author": "Dongsheng Cai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dcai/test/issues"
+  },
+  "homepage": "https://github.com/dcai/test#readme",
+  "dependencies": {
+    "mocha": "^2.5.3"
+  }
+}
