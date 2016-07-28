@@ -2,7 +2,7 @@
 
 cd /home/dcai/test/
 git stash -q
-git pull -r
+git pull -r -q
 TT=`date +"%Y-%m-%d"`
 date >> log.txt
 git commit -a -m "$TT checkin" &> /dev/null
