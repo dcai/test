@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 cd /home/dcai/test/
-git stash
+git stash -q
 git pull -r
 TT=`date +"%Y-%m-%d"`
 date >> log.txt
