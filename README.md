@@ -1,3 +1,3 @@
-# test repository
+# test git repository
 
 Housekeeping stuff.
