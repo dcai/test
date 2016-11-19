@@ -54,12 +54,12 @@ def checkin_netease(music_u, csrf):
     url = 'http://music.163.com/api/point/dailyTask?type={}'.format(TYPE_WEBPC)
     response = requests.post(url, cookies=cookies, headers=headers)
     wjson = response.json()
-    log_from_code(wjson, 'web & pc')
+    log_from_code(wjson, 'netease: web & pc')
     # android
     url = 'http://music.163.com/api/point/dailyTask?type={}'.format(TYPE_ANDROID)
     response = requests.post(url, cookies=cookies, headers=headers)
     ajson = response.json()
-    log_from_code(ajson, 'android')
+    log_from_code(ajson, 'netease: android')
 
 def log_from_code(response_json, platform):
     code = response_json['code']
@@ -85,10 +85,10 @@ def checkin_zimuzu(username, password):
     r = requests.post("http://www.zimuzu.tv/User/Login/ajaxLogin", data = data, headers=headers)
     try:
         o = r.json()
+        l.info('zimuzu: {}'.format(o['info']))
     except Exception as e:
         l.info(e)
         pass
-    l.info(o)
 
     #url = "http://www.zimuzu.tv/user/login/getCurUserTopInfo"
     #r1 = requests.get(url, cookies=r.cookies, headers=headers)
