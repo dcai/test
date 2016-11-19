@@ -64,9 +64,9 @@ def checkin_netease(music_u, csrf):
 def log_from_code(response_json, platform):
     code = response_json['code']
     if code == -2:
-        l.info('{} failed. you already checked in today.'.format(platform))
+        l.info('{}: you already checked in today.'.format(platform))
     elif code == 200:
-        l.info('{} ok. +{} points'.format(platform, response_json['point']))
+        l.info('{} OK. +{} points'.format(platform, response_json['point']))
     else:
         l.info('{} failed. {}({})'.format(platform, code, response_json['msg']))
 
