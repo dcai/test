@@ -87,7 +87,7 @@ def checkin_zimuzu(username, password):
         o = r.json()
         l.info('zimuzu: {}'.format(o['info']))
     except Exception as e:
-        l.info(e)
+        l.info('zimuzu: error - {}'.format(e))
         pass
 
     #url = "http://www.zimuzu.tv/user/login/getCurUserTopInfo"
