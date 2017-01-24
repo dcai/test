@@ -70,24 +70,25 @@ def log_from_code(response_json, platform):
     else:
         l.info('{} failed. {}({})'.format(platform, code, response_json['msg']))
 
-def checkin_zimuzu(username, password):
-    backurl = 'http://www.zimuzu.tv/user/sign'
+def checkin_zimuzu(domain, username, password):
+    loginUrl = 'http://{}/User/Login/ajaxLogin'.format(domain)
+    backurl = 'http://{}/user/sign'.format(domain)
     data = {
         'account': username,
         'password': password,
-        'remember': 1,
+        'remember': 0,
         'url_back': backurl
     }
     headers = {
         'User-Agent' : UA,
-        'Referer': 'http://www.zimuzu.tv'
+        'Referer': 'http://{}'.format(domain)
     }
-    r = requests.post("http://www.zimuzu.tv/User/Login/ajaxLogin", data = data, headers=headers)
+    r = requests.post(loginUrl, data = data, headers=headers)
     try:
         o = r.json()
-        l.info('zimuzu: {}'.format(o['info']))
+        l.info('{}: {}'.format(domain, o['info']))
     except Exception as e:
-        l.info('zimuzu: error - {}'.format(e))
+        l.info('{}: error - {}'.format(domain, e))
         pass
 
     #url = "http://www.zimuzu.tv/user/login/getCurUserTopInfo"
@@ -162,6 +163,7 @@ def checkin_smzdm(email, password):
     r2 = http.get(CHECKIN_URL, headers=headers)
 
 checkin_netease(cfg['netease']['music_u'], cfg['netease']['csrf'])
-checkin_zimuzu(cfg['zimuzu']['username'], cfg['zimuzu']['password'])
+checkin_zimuzu('www.zmz2017.com', cfg['zimuzu']['username'], cfg['zimuzu']['password'])
+checkin_zimuzu('www.zimuzu.tv', cfg['zimuzu']['username'], cfg['zimuzu']['password'])
 #checkin_v2ex(cfg['v2ex']['username'], cfg['v2ex']['password'])
 #checkin_smzdm(cfg['smzdm']['email'], cfg['smzdm']['password'])
