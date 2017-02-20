@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-cd /home/dcai/test/
+cd /home/dcai/Dropbox/src/test/
 git stash -q
 git pull -r -q
 TT=`date +"%Y-%m-%d"`
