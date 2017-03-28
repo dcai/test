@@ -86,7 +86,7 @@ def checkin_zimuzu(domain, username, password):
     r = requests.post(loginUrl, data = data, headers=headers)
     try:
         o = r.json()
-        l.info('{}: {}'.format(domain, o['info']))
+        l.info('{}: [{}] {}'.format(domain, username, o['info']))
     except Exception as e:
         l.info('{}: error - {}'.format(domain, e))
         pass
