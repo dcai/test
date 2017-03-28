@@ -165,5 +165,6 @@ def checkin_smzdm(email, password):
 checkin_netease(cfg['netease']['music_u'], cfg['netease']['csrf'])
 checkin_zimuzu('www.zmz2017.com', cfg['zimuzu']['username'], cfg['zimuzu']['password'])
 checkin_zimuzu('www.zimuzu.tv', cfg['zimuzu']['username'], cfg['zimuzu']['password'])
+checkin_zimuzu('www.zmz2017.com', cfg['zimuzu2']['username'], cfg['zimuzu2']['password'])
 #checkin_v2ex(cfg['v2ex']['username'], cfg['v2ex']['password'])
 #checkin_smzdm(cfg['smzdm']['email'], cfg['smzdm']['password'])
