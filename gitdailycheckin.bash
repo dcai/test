@@ -1,6 +1,7 @@
 #!/bin/bash
 
-cd ~/test/
+DIR=$(dirname "$0")
+cd $DIR
 git stash -q
 git pull -r -q
 TT=$(date +"%Y-%m-%d")
