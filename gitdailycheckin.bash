@@ -1,10 +1,10 @@
 #!/bin/bash
 
 DIR=$(dirname "$0")
-cd "$DIR"
+cd "$DIR" || exit 1
 git stash -q
 git pull -r -q
 TT=$(date +"%Y-%m-%d")
-date >>log.txt
-git commit -a -m "$TT checkin" &>/dev/null
+date >>logs/log.txt
+git commit -am "$TT checkin" &>/dev/null
 git push origin master -u &>/dev/null
