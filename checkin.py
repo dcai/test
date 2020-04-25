@@ -5,7 +5,8 @@ import logging.config
 import requests
 import time
 import configparser
-import os, sys
+import os
+import sys
 from bs4 import BeautifulSoup
 
 try:
@@ -16,7 +17,7 @@ except ImportError:
 
 # http_client.HTTPConnection.debuglevel = 1
 
-UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.80 Safari/537.36"
+UA = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)"
 
 cfg = configparser.ConfigParser()
 dirname = os.path.dirname(os.path.realpath(sys.argv[0]))
