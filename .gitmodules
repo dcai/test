@@ -1,3 +1,0 @@
-[submodule "cURL"]
-	path = cURL
-	url = git@github.com:dcai/cURL.git
