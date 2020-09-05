@@ -154,22 +154,17 @@ def checkin_smzdm(email, password):
 
 
 checkin_netease(cfg["netease"]["music_u"], cfg["netease"]["csrf"])
-#  checkin_zimuzu("www.zimuzu.io", cfg["zimuzu"]["username"], cfg["zimuzu"]["password"])
-#  checkin_zimuzu("www.zimuzu.io", cfg["zimuzu2"]["username"], cfg["zimuzu2"]["password"])
-try:
-    checkin_zimuzu(
-        "www.zmz2019.com", cfg["zimuzu"]["username"], cfg["zimuzu"]["password"]
-    )
-except:
-    print("error connecting to %s: %s" % ("www.zmz2019.com", cfg["zimuzu"]["username"]))
 
+zmzdomain="www.rrys2020.com"
 try:
     checkin_zimuzu(
-        "www.zmz2019.com", cfg["zimuzu2"]["username"], cfg["zimuzu2"]["password"]
+        zmzdomain, cfg["zimuzu"]["username"], cfg["zimuzu"]["password"]
+    )
+    checkin_zimuzu(
+        zmzdomain, cfg["zimuzu2"]["username"], cfg["zimuzu2"]["password"]
     )
 except:
-    print(
-        "error connecting to %s: %s" % ("www.zmz2019.com", cfg["zimuzu2"]["username"])
-    )
+    print("error connecting to %s: %s" % (zmzdomain, cfg["zimuzu"]["username"]))
+
 # checkin_v2ex(cfg['v2ex']['username'], cfg['v2ex']['password'])
 # checkin_smzdm(cfg['smzdm']['email'], cfg['smzdm']['password'])
