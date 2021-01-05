@@ -77,13 +77,12 @@ def checkin_zimuzu(domain, username, password):
         "url_back": backurl,
     }
     headers = {"User-Agent": UA, "Referer": "http://{}".format(domain)}
-    r = requests.post(loginUrl, data=data, headers=headers)
     try:
+        r = requests.post(loginUrl, data=data, headers=headers)
         o = r.json()
         l.info("{}: [{}] {}".format(domain, username, o["info"]))
     except Exception as e:
         l.info("{}: error - {}".format(domain, e))
-        pass
 
     # url = "http://www.zimuzu.tv/user/login/getCurUserTopInfo"
     # r1 = requests.get(url, cookies=r.cookies, headers=headers)
@@ -160,11 +159,11 @@ try:
     checkin_zimuzu(
         zmzdomain, cfg["zimuzu"]["username"], cfg["zimuzu"]["password"]
     )
-    checkin_zimuzu(
-        zmzdomain, cfg["zimuzu2"]["username"], cfg["zimuzu2"]["password"]
-    )
-except:
-    print("error connecting to %s: %s" % (zmzdomain, cfg["zimuzu"]["username"]))
+    #  checkin_zimuzu(
+    #      zmzdomain, cfg["zimuzu2"]["username"], cfg["zimuzu2"]["password"]
+    #  )
+except Exception as e:
+    print("checkin_zimuzu error connecting to %s: %s" % (zmzdomain, cfg["zimuzu"]["username"]))
 
 # checkin_v2ex(cfg['v2ex']['username'], cfg['v2ex']['password'])
 # checkin_smzdm(cfg['smzdm']['email'], cfg['smzdm']['password'])
