@@ -67,37 +67,6 @@ def log_from_code(response_json, platform):
         l.info("{} failed. {}({})".format(platform, code, response_json["msg"]))
 
 
-def checkin_zimuzu(domain, username, password):
-    loginUrl = "http://{}/User/Login/ajaxLogin".format(domain)
-    backurl = "http://{}/user/sign".format(domain)
-    data = {
-        "account": username,
-        "password": password,
-        "remember": 0,
-        "url_back": backurl,
-    }
-    headers = {"User-Agent": UA, "Referer": "http://{}".format(domain)}
-    try:
-        r = requests.post(loginUrl, data=data, headers=headers)
-        o = r.json()
-        l.info("{}: [{}] {}".format(domain, username, o["info"]))
-    except Exception as e:
-        l.info("{}: error - {}".format(domain, e))
-
-    # url = "http://www.zimuzu.tv/user/login/getCurUserTopInfo"
-    # r1 = requests.get(url, cookies=r.cookies, headers=headers)
-    ##l.info(r1.json())
-
-    ## open checkin page and wait 16 seconds
-    # r2 = requests.get(backurl, cookies=r.cookies, headers=headers)
-    # time.sleep(16)
-
-    ## do checkin
-    # url = "http://www.zimuzu.tv/user/sign/dosign"
-    # r3 = requests.get(url, cookies=r.cookies, headers=headers)
-    # o = r3.json()
-    # l.info(r3.content)
-
 
 def checkin_v2ex(username, password):
     login_url = "https://v2ex.com/signin"
@@ -154,16 +123,47 @@ def checkin_smzdm(email, password):
 
 checkin_netease(cfg["netease"]["music_u"], cfg["netease"]["csrf"])
 
-zmzdomain="www.rrys2020.com"
-try:
-    checkin_zimuzu(
-        zmzdomain, cfg["zimuzu"]["username"], cfg["zimuzu"]["password"]
-    )
-    #  checkin_zimuzu(
-    #      zmzdomain, cfg["zimuzu2"]["username"], cfg["zimuzu2"]["password"]
-    #  )
-except Exception as e:
-    print("checkin_zimuzu error connecting to %s: %s" % (zmzdomain, cfg["zimuzu"]["username"]))
+#  def checkin_zimuzu(domain, username, password):
+#      loginUrl = "http://{}/User/Login/ajaxLogin".format(domain)
+#      backurl = "http://{}/user/sign".format(domain)
+#      data = {
+#          "account": username,
+#          "password": password,
+#          "remember": 0,
+#          "url_back": backurl,
+#      }
+#      headers = {"User-Agent": UA, "Referer": "http://{}".format(domain)}
+#      try:
+#          r = requests.post(loginUrl, data=data, headers=headers)
+#          o = r.json()
+#          l.info("{}: [{}] {}".format(domain, username, o["info"]))
+#      except Exception as e:
+#          l.info("{}: error - {}".format(domain, e))
+#
+#      # url = "http://www.zimuzu.tv/user/login/getCurUserTopInfo"
+#      # r1 = requests.get(url, cookies=r.cookies, headers=headers)
+#      ##l.info(r1.json())
+#
+#      ## open checkin page and wait 16 seconds
+#      # r2 = requests.get(backurl, cookies=r.cookies, headers=headers)
+#      # time.sleep(16)
+#
+#      ## do checkin
+#      # url = "http://www.zimuzu.tv/user/sign/dosign"
+#      # r3 = requests.get(url, cookies=r.cookies, headers=headers)
+#      # o = r3.json()
+#      # l.info(r3.content)
+#
+#  zmzdomain="www.rrys2020.com"
+#  try:
+#      checkin_zimuzu(
+#          zmzdomain, cfg["zimuzu"]["username"], cfg["zimuzu"]["password"]
+#      )
+#      checkin_zimuzu(
+#          zmzdomain, cfg["zimuzu2"]["username"], cfg["zimuzu2"]["password"]
+#      )
+#  except Exception as e:
+#      print("checkin_zimuzu error connecting to %s: %s" % (zmzdomain, cfg["zimuzu"]["username"]))
 
 # checkin_v2ex(cfg['v2ex']['username'], cfg['v2ex']['password'])
 # checkin_smzdm(cfg['smzdm']['email'], cfg['smzdm']['password'])
