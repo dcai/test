@@ -19,7 +19,7 @@ except ImportError:
 
 UA = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)"
 
-cfg = configparser.ConfigParser()
+cfg = configparser.ConfigParser(strict=False, interpolation=None)
 dirname = os.path.dirname(os.path.realpath(sys.argv[0]))
 cfg.read("{}/credentials.ini".format(dirname))
 
@@ -28,7 +28,7 @@ l.setLevel(logging.DEBUG)
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 # create file handler which logs even debug messages
-fileHandler = logging.FileHandler("/tmp/test.log")
+fileHandler = logging.FileHandler("/tmp/checkins.log")
 fileHandler.setLevel(logging.DEBUG)
 fileHandler.setFormatter(formatter)
 l.addHandler(fileHandler)
@@ -67,61 +67,20 @@ def log_from_code(response_json, platform):
         l.info("{} failed. {}({})".format(platform, code, response_json["msg"]))
 
 
-
-def checkin_v2ex(username, password):
-    login_url = "https://v2ex.com/signin"
-    home_page = "https://www.v2ex.com"
-    mission_url = "https://www.v2ex.com/mission/daily"
-    headers = {
-        "User-Agent": UA,
-        "Host": "www.v2ex.com",
-        "Referer": "https://www.v2ex.com/signin",
-        "Origin": "https://www.v2ex.com",
-    }
-
-    v2ex_session = requests.Session()
-    # find once
-    once_value = search_page(v2ex_session, headers, login_url, "name", "once")["value"]
-    post_info = {"u": username, "p": password, "once": once_value, "next": "/"}
-    # login
-    resp = v2ex_session.post(login_url, data=post_info, headers=headers, verify=True)
-    short_url = search_page(
-        v2ex_session, headers, mission_url, "class", "super normal button"
-    )["onclick"]
-    first_quote = short_url.find("'")
-    last_quote = short_url.find(
-        "'", first_quote + 1
-    )  # str.find(str, beg=0 end=len(string))
-    final_url = home_page + short_url[first_quote + 1 : last_quote]
-    l.info(final_url)
-    # perform checkin
-    page = v2ex_session.get(final_url, headers=headers, verify=True).content
-    ok = search_page(v2ex_session, headers, mission_url, "class", "fa fa-ok-sign")
-
-
-def search_page(http, headers, url, tag, name):
-    page = http.get(url, headers=headers, verify=True).text
-    soup = BeautifulSoup(page, "lxml")
-    soup_result = soup.find(attrs={tag: name})
-    return soup_result
-
-
-def checkin_smzdm(email, password):
-    BASE_URL = "http://www.smzdm.com"
-    LOGIN_URL = BASE_URL + "/user/login/jsonp_check"
-    LOGIN_URL = "https://zhiyou.smzdm.com/user/login/ajax_check"
-    CHECKIN_URL = BASE_URL + "/user/qiandao/jsonp_checkin"
-    headers = {"User-Agent": UA, "Referer": BASE_URL}
-    params = {"user_login": email, "user_pass": password}
-    l.info(headers)
-    l.info(params)
-    http = requests.Session()
-    r = http.get(BASE_URL, headers=headers)
-    r1 = http.get(LOGIN_URL, params=params, headers=headers)
-    r2 = http.get(CHECKIN_URL, headers=headers)
-
-
 checkin_netease(cfg["netease"]["music_u"], cfg["netease"]["csrf"])
+
+
+def checkin_smzdm(sess):
+    BASE_URL = "http://zhiyou.smzdm.com"
+    CHECKIN_URL = BASE_URL + "/user/checkin/jsonp_checkin"
+    headers = {"User-Agent": UA, "Referer": BASE_URL}
+    http = requests.Session()
+    cookies = {"sess": sess}
+    r = http.get(CHECKIN_URL, cookies=cookies, headers=headers)
+    l.info(r.json())
+
+
+checkin_smzdm(cfg["smzdm"]["sess"])
 
 #  def checkin_zimuzu(domain, username, password):
 #      loginUrl = "http://{}/User/Login/ajaxLogin".format(domain)
@@ -164,6 +123,44 @@ checkin_netease(cfg["netease"]["music_u"], cfg["netease"]["csrf"])
 #      )
 #  except Exception as e:
 #      print("checkin_zimuzu error connecting to %s: %s" % (zmzdomain, cfg["zimuzu"]["username"]))
-
+#
+#
+#  def checkin_v2ex(username, password):
+#      login_url = "https://v2ex.com/signin"
+#      home_page = "https://www.v2ex.com"
+#      mission_url = "https://www.v2ex.com/mission/daily"
+#      headers = {
+#          "User-Agent": UA,
+#          "Host": "www.v2ex.com",
+#          "Referer": "https://www.v2ex.com/signin",
+#          "Origin": "https://www.v2ex.com",
+#      }
+#
+#      v2ex_session = requests.Session()
+#      # find once
+#      once_value = search_page(v2ex_session, headers, login_url, "name", "once")["value"]
+#      post_info = {"u": username, "p": password, "once": once_value, "next": "/"}
+#      # login
+#      resp = v2ex_session.post(login_url, data=post_info, headers=headers, verify=True)
+#      short_url = search_page(
+#          v2ex_session, headers, mission_url, "class", "super normal button"
+#      )["onclick"]
+#      first_quote = short_url.find("'")
+#      last_quote = short_url.find(
+#          "'", first_quote + 1
+#      )  # str.find(str, beg=0 end=len(string))
+#      final_url = home_page + short_url[first_quote + 1 : last_quote]
+#      l.info(final_url)
+#      # perform checkin
+#      page = v2ex_session.get(final_url, headers=headers, verify=True).content
+#      ok = search_page(v2ex_session, headers, mission_url, "class", "fa fa-ok-sign")
+#
+#
+#  def search_page(http, headers, url, tag, name):
+#      page = http.get(url, headers=headers, verify=True).text
+#      soup = BeautifulSoup(page, "lxml")
+#      soup_result = soup.find(attrs={tag: name})
+#      return soup_result
+#
+#
 # checkin_v2ex(cfg['v2ex']['username'], cfg['v2ex']['password'])
-# checkin_smzdm(cfg['smzdm']['email'], cfg['smzdm']['password'])
