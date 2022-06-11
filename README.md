@@ -1,3 +1,3 @@
 # test git repository
 
-Housekeeping stuff.
+Test git and github.
