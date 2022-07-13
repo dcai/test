@@ -1,3 +1,3 @@
-# test git repository
+# test repository
 
-Test git and github.
+Some experiments.
