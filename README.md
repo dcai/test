@@ -1,3 +1,3 @@
 # test repository
 
-Some github or CI experiments.
+Some github repo or actions experiments.
