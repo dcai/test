@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 # -- coding: utf-8 --
 
-import logging.config
-import requests
-import time
 import configparser
+import logging.config
 import os
+import socket
 import sys
+import time
+import urllib.request
+
+import requests
 
 try:
     import http.client as http_client
@@ -22,12 +25,12 @@ cfg = configparser.ConfigParser(strict=False, interpolation=None)
 dirname = os.path.dirname(os.path.realpath(sys.argv[0]))
 cfg.read("{}/credentials.ini".format(dirname))
 
-l = logging.getLogger("checkin")
+l = logging.getLogger(cfg["logging"]["name"])
 l.setLevel(logging.DEBUG)
-formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+formatter = logging.Formatter(cfg["logging"]["fmt"])
 
 # create file handler which logs even debug messages
-fileHandler = logging.FileHandler("/tmp/checkins.log")
+fileHandler = logging.FileHandler(cfg["logging"]["filepath"])
 fileHandler.setLevel(logging.DEBUG)
 fileHandler.setFormatter(formatter)
 l.addHandler(fileHandler)
@@ -39,34 +42,34 @@ streamHandler.setFormatter(formatter)
 l.addHandler(streamHandler)
 
 
-def checkin_netease(music_u, csrf):
-    TYPE_WEBPC = 1
-    TYPE_ANDROID = 0
-    cookies = {"MUSIC_U": music_u, "__remember_me": "true", "__csrf": csrf}
-    headers = {"User-Agent": UA, "Referer": "http://music.163.com/"}
-    # web & pc
-    url = "http://music.163.com/api/point/dailyTask?type={}".format(TYPE_WEBPC)
-    response = requests.post(url, cookies=cookies, headers=headers)
-    wjson = response.json()
-    log_from_code(wjson, "netease: web & pc")
-    # android
-    url = "http://music.163.com/api/point/dailyTask?type={}".format(TYPE_ANDROID)
-    response = requests.post(url, cookies=cookies, headers=headers)
-    ajson = response.json()
-    log_from_code(ajson, "netease: android")
-
-
-def log_from_code(response_json, platform):
-    code = response_json["code"]
-    if code == -2:
-        l.info("{}: you already checked in today.".format(platform))
-    elif code == 200:
-        l.info("{} OK. +{} points".format(platform, response_json["point"]))
-    else:
-        l.info("{} failed. {}({})".format(platform, code, response_json["msg"]))
-
-
-checkin_netease(cfg["netease"]["music_u"], cfg["netease"]["csrf"])
+#  def checkin_netease(music_u, csrf):
+#      TYPE_WEBPC = 1
+#      TYPE_ANDROID = 0
+#      cookies = {"MUSIC_U": music_u, "__remember_me": "true", "__csrf": csrf}
+#      headers = {"User-Agent": UA, "Referer": "http://music.163.com/"}
+#      # web & pc
+#      url = "http://music.163.com/api/point/dailyTask?type={}".format(TYPE_WEBPC)
+#      response = requests.post(url, cookies=cookies, headers=headers)
+#      wjson = response.json()
+#      log_from_code(wjson, "netease: web & pc")
+#      # android
+#      url = "http://music.163.com/api/point/dailyTask?type={}".format(TYPE_ANDROID)
+#      response = requests.post(url, cookies=cookies, headers=headers)
+#      ajson = response.json()
+#      log_from_code(ajson, "netease: android")
+#
+#
+#  def log_from_code(response_json, platform):
+#      code = response_json["code"]
+#      if code == -2:
+#          l.info("{}: you already checked in today.".format(platform))
+#      elif code == 200:
+#          l.info("{} OK. +{} points".format(platform, response_json["point"]))
+#      else:
+#          l.info("{} failed. {}".format(platform, code))
+#
+#
+#  checkin_netease(cfg["netease"]["music_u"], cfg["netease"]["csrf"])
 
 
 def checkin_smzdm(sess):
@@ -76,7 +79,7 @@ def checkin_smzdm(sess):
     http = requests.Session()
     cookies = {"sess": sess}
     r = http.get(CHECKIN_URL, cookies=cookies, headers=headers)
-    l.info(r.json())
+    l.info("{}: {}".format("smzdm", r.json()))
 
 
 checkin_smzdm(cfg["smzdm"]["sess"])
@@ -122,3 +125,9 @@ checkin_smzdm(cfg["smzdm"]["sess"])
 #      )
 #  except Exception as e:
 #      print("checkin_zimuzu error connecting to %s: %s" % (zmzdomain, cfg["zimuzu"]["username"]))
+
+
+try:
+    urllib.request.urlopen(cfg["ping"]["pythoncheckins"], timeout=10)
+except socket.error as e:
+    l.info("Ping failed: %s" % e)
