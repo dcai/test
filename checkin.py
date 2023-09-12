@@ -82,7 +82,7 @@ def checkin_smzdm(sess):
     l.info("{}: {}".format("smzdm", r.json()))
 
 
-checkin_smzdm(cfg["smzdm"]["sess"])
+#  checkin_smzdm(cfg["smzdm"]["sess"])
 
 #  def checkin_zimuzu(domain, username, password):
 #      loginUrl = "http://{}/User/Login/ajaxLogin".format(domain)
