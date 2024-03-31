@@ -1,0 +1,16 @@
+{
+  "name": "test",
+  "private": true,
+  "version": "1.0.0",
+  "description": "test files",
+  "main": "test.js",
+  "scripts": {
+    "test": "true"
+  },
+  "keywords": [],
+  "author": "dcai",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "axios": "^1.6.8"
+  }
+}
