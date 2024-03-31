@@ -1,3 +1,7 @@
+const hello = (name) => `hello ${name}`;
+
+
+hello('dcai')
 /**
  * Definition for singly-linked list.
  * function ListNode(val, next) {
