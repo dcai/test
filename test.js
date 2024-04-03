@@ -1,7 +1,6 @@
 const hello = (name) => `hello ${name}`;
 
-
-hello('dcai')
+hello("dcai");
 /**
  * Definition for singly-linked list.
  * function ListNode(val, next) {
@@ -10,6 +9,9 @@ hello('dcai')
  * }
  */
 /**
+ * @typedef {Object} ListNode
+ * @property {ListNode} val
+ * @property {ListNode} next
  * @param {ListNode} l1
  * @param {ListNode} l2
  * @return {ListNode}
