@@ -1,0 +1,12 @@
+curl --location 'https://codestats.net/api/my/pulses' \
+--header 'X-API-Token: {token}' \
+--header 'Content-Type: application/json' \
+--data '{
+    "coded_at": "2024-04-19T17:55:48+1000",
+    "xps": [
+        {
+            "language": "Lua",
+            "xp": 1
+        }
+    ]
+}'
