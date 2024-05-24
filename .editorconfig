@@ -2,20 +2,48 @@ root = true
 
 [*]
 charset = utf-8
-indent_size = 4
-indent_style = space
 end_of_line = lf
-insert_final_newline = false
-trim_trailing_whitespace = true
-max_line_length = 80
-
-[*.py]
 indent_style = space
 indent_size = 4
+trim_trailing_whitespace = true
 
 [Makefile]
 indent_style = tab
 
-[{package.json,.travis.yml}]
+[*.{lua}]
+indent_style = space
+indent_size = 2
+
+[git/config]
+indent_style = tab
+
+[*.{json,js,jsx,ts,tsx}]
+indent_style = space
+indent_size = 2
+
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 4
+
+[*.{fish,bash,sh}]
+indent_style = space
+indent_size = 4
+switch_case_indent = true  # like -ci
+; binary_next_line   = true  # like -bn
+; space_redirects    = true  # like -sr
+
+[*.{mojo,py}]
+indent_style = space
+indent_size = 4
+
+; .net c# and f#
+[*.{cs,csx,fsx}]
+end_of_line = crlf
+charset = utf-8-bom
+trim_trailing_whitespace = false
+insert_final_newline = false
+
+; elixir
+[*.{ex}]
 indent_style = space
 indent_size = 2

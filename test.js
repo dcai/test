@@ -1,6 +1,11 @@
+/**
+ * @param {string}
+ * @returns {string}
+ */
 const hello = (name) => `hello ${name}`;
 
 hello("dcai");
+
 /**
  * Definition for singly-linked list.
  * function ListNode(val, next) {
@@ -16,9 +21,9 @@ hello("dcai");
  * @param {ListNode} l2
  * @return {ListNode}
  */
-
-function toArray(l) {
-  var arr = [l.val];
+function toArray(input) {
+  let l = input;
+  const arr = [l.val];
   while (l.next !== null) {
     l = l.next;
     arr.push(l.val);
@@ -35,14 +40,14 @@ const toNum = (v) => {
   return v;
 };
 
-var addTwoNumbers = function (li1, li2) {
-  var target = [];
+const addTwoNumbers = function (li1, li2) {
+  const target = [];
   l1 = toArray(li1);
   l2 = toArray(li2);
-  var size = l1.length > l2.length ? l1.length : l2.length;
-  var addOne = 0;
-  for (var i = 0; i < size; i++) {
-    var sum = toNum(l1[i]) + toNum(l2[i]) + addOne;
+  const size = l1.length > l2.length ? l1.length : l2.length;
+  let addOne = 0;
+  for (let i = 0; i < size; i++) {
+    const sum = toNum(l1[i]) + toNum(l2[i]) + addOne;
     target.push(sum < 10 ? sum : sum - 10);
     addOne = sum - 10 >= 0 ? 1 : 0;
   }
@@ -56,3 +61,4 @@ const result = addTwoNumbers(
   toLinkList([9, 9, 9, 9, 9, 9, 9]),
   toLinkList([9, 9, 9, 9]),
 );
+console.log(`result: ${result}`);
