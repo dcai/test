@@ -11,8 +11,12 @@ date >>logs/log.txt
 if [[ -n "$MONITOR_URL" ]]; then
   curl "$MONITOR_URL?state=run"
 fi
-git commit -am "$TT checkin" &>"$log"
-git push origin master -u &>"$log"
+
+if git commit -am "$TT checkin" &>"$log" && git push origin master -u &>"$log"; then
+  state=complete
+else
+  state=fail
+fi
 if [[ -n "$MONITOR_URL" ]]; then
-  curl "$MONITOR_URL?state=complete"
+  curl "$MONITOR_URL?state=$state"
 fi
